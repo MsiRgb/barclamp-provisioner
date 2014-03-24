@@ -241,6 +241,9 @@ log_to time service ntp start
 service bluepill start
 
 # Transition to our final state
-post_state $HOSTNAME "$final_state"
+while ! post_state $HOSTNAME "$final_state"; do
+  echo "post_state $HOSTNAME \"$final_state\" failed! Retrying in 1s..."
+  sleep 1
+done
 
 echo "Done"
